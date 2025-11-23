@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Музыка и книги по настроению</title>
+    <link rel="stylesheet" href="web/main.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Музыка и книги по настроению</h1>
+        
+        <!-- Шаг 1: Выбор настроения -->
+        <div id="mood-selection-step">
+            <p>Выберите ваше текущее настроение:</p>
+            <div class="mood-selection">
+                <button class="mood-btn sad" data-mood="sad">Грустно</button>
+                <button class="mood-btn happy" data-mood="happy">Весело</button>
+                <button class="mood-btn neutral" data-mood="neutral">Нейтрально</button>
+            </div>
+        </div>
+        
+        <!-- Шаг 2: Аудиозапись настроения -->
+        <div id="mood-audio-step" class="hidden">
+            <h2>Музыка для вашего настроения</h2>
+            <p>Прослушайте эту мелодию, чтобы усилить ваше настроение</p>
+            <div class="audio-player">
+                <div class="progress-container">
+                    <div class="progress-bar" id="mood-progress"></div>
+                </div>
+                <audio id="mood-audio" controls>
+                    Ваш браузер не поддерживает аудио элементы.
+                </audio>
+            </div>
+            <button id="next-to-book" class="submit-btn hidden">Перейти к отрывку из книги</button>
+        </div>
+        
+        <!-- Шаг 3: Аудиозапись книги -->
+        <div id="book-audio-step" class="hidden">
+            <h2>Отрывок из книги</h2>
+            <p>Прослушайте этот отрывок из произведения</p>
+            <div class="audio-player">
+                <div class="progress-container">
+                    <div class="progress-bar" id="book-progress"></div>
+                </div>
+                <audio id="book-audio" controls>
+                    Ваш браузер не поддерживает аудио элементы.
+                </audio>
+            </div>
+            <p class="book-info" id="book-info"></p>
+            <button id="next-to-feedback" class="submit-btn hidden">Поделиться впечатлениями</button>
+        </div>
+        
+        <!-- Шаг 4: Обратная связь -->
+        <div id="feedback-step" class="hidden">
+            <h2>Ваши впечатления</h2>
+            <p>Поделитесь своими мыслями о прослушанном отрывке:</p>
+            <div class="feedback-section">
+                <textarea id="feedback-text" placeholder="Напишите здесь ваши впечатления..."></textarea>
+                <button id="submit-feedback" class="submit-btn">Отправить</button>
+            </div>
+        </div>
+        
+        <!-- Шаг 5: Благодарность -->
+        <div id="thank-you-step" class="hidden">
+            <h2>Спасибо за ваши впечатления!</h2>
+            <p>Мы ценим, что вы поделились своими мыслями.</p>
+            <button id="restart" class="submit-btn">Начать заново</button>
+        </div>
+    </div>
+
+    <script src="web/script.js"></script>
+
+</body>
+</html>
