@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Музыка и басни по настроению</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            transition: background 1s ease;
+        }
+
+        body.happy-mood {
+            background: linear-gradient(135deg, #f7971e, #ffd200);
+        }
+
+        body.sad-mood {
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+        }
+
+        body.neutral-mood {
+            background: linear-gradient(135deg, #11998e, #38ef7d);
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        h2 {
+            margin: 20px 0;
+            font-size: 1.8rem;
+            text-align: center;
+        }
+
+        h3 {
+            margin: 15px 0;
+            font-size: 1.3rem;
+        }
+
+        p {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        .mood-selection {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .mood-btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            color: white;
+        }
+
+        .mood-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .mood-btn.sad {
+            background: linear-gradient(to right, #3494e6, #ec6ead);
+        }
+
+        .mood-btn.happy {
+            background: linear-gradient(to right, #f7971e, #ffd200);
+        }
+
+        .mood-btn.neutral {
+            background: linear-gradient(to right, #11998e, #38ef7d);
+        }
+
+        .audio-player {
+            width: 100%;
+            margin: 30px 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        audio {
+            width: 100%;
+            margin: 15px 0;
+        }
+
+        .fable-text {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+            font-style: italic;
+            border-left: 4px solid #ffd200;
+            white-space: pre-line;
+            line-height: 1.8;
+        }
+
+        body.happy-mood .fable-text {
+            border-left-color: #ffd200;
+        }
+
+        body.sad-mood .fable-text {
+            border-left-color: #3498db;
+        }
+
+        body.neutral-mood .fable-text {
+            border-left-color: #38ef7d;
+        }
+
+        .survey-section {
+            margin-top: 30px;
+        }
+
+        .question {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .question p {
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .option:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .option input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .option label {
+            cursor: pointer;
+            flex: 1;
+            font-size: 1rem;
+        }
+
+        .book-recommendations {
+            margin-top: 30px;
+        }
+
+        .book-list {
+            list-style: none;
+            margin-top: 20px;
+        }
+
+        .book-list li {
+            background: rgba(255, 255, 255, 0.15);
+            margin-bottom: 15px;
+            padding: 15px 20px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            border-left: 4px solid #ffd200;
+        }
+
+        body.happy-mood .book-list li {
+            border-left-color: #ffd200;
+        }
+
+        body.sad-mood .book-list li {
+            border-left-color: #3498db;
+        }
+
+        body.neutral-mood .book-list li {
+            border-left-color: #38ef7d;
+        }
+
+        .book-list li strong {
+            color: #ffd200;
+            display: block;
+            margin-bottom: 5px;
+            font-size: 1.2rem;
+        }
+
+        body.happy-mood .book-list li strong {
+            color: white;
+        }
+
+        body.sad-mood .book-list li strong {
+            color: white;
+        }
+
+        body.neutral-mood .book-list li strong {
+            color: white;
+        }
+
+        .submit-btn, .next-btn, .restart-btn {
+            padding: 12px 30px;
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 15px 0;
+            display: inline-block;
+        }
+
+        .submit-btn:hover, .next-btn:hover, .restart-btn:hover {
+            background: #ff5252;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .music-source {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #e0e0e0;
+        }
+
+        .music-source a {
+            color: #ffd200;
+            text-decoration: none;
+        }
+
+        body.happy-mood .music-source a {
+            color: #ffd200;
+        }
+
+        body.sad-mood .music-source a {
+            color: #3498db;
+        }
+
+        body.neutral-mood .music-source a {
+            color: #38ef7d;
+        }
+
+        .music-source a:hover {
+            text-decoration: underline;
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(to right, #ff9966, #ff5e62);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .button-container {
+            text-align: center;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .mood-selection {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .mood-btn {
+                width: 100%;
+                max-width: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎭 Музыка и басни по настроению</h1>
+        
+        <!-- ШАГ 1: Выбор настроения -->
+        <div id="step-mood" class="step">
+            <p>Выберите ваше текущее настроение:</p>
+            <div class="mood-selection">
+                <button class="mood-btn sad" data-mood="sad">😔 Грустно</button>
+                <button class="mood-btn happy" data-mood="happy">😊 Весело</button>
+                <button class="mood-btn neutral" data-mood="neutral">😐 Нейтрально</button>
+            </div>
+        </div>
+        
+        <!-- ШАГ 2: Прослушивание музыки -->
+        <div id="step-music" class="step hidden">
+            <h2>🎵 Послушайте музыку для создания настроения</h2>
+            
+            <div class="audio-player">
+                <p><strong id="music-title">В.А. Моцарт — «Маленькая ночная серенада»</strong></p>
+                <p class="music-source" id="music-source"><a href="#" target="_blank"></a></p>
+                
+                <div class="progress-container">
+                    <div class="progress-bar" id="music-progress"></div>
+                </div>
+                
+                <audio id="music-audio" controls>
+                    <source src="" type="audio/mpeg">
+                    Ваш браузер не поддерживает аудио элементы.
+                </audio>
+                
+                <div class="button-container">
+                    <button id="next-to-fable" class="next-btn hidden">📖 Перейти к басне</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ШАГ 3: Чтение басни -->
+        <div id="step-fable" class="step hidden">
+            <h2>📖 Прочитайте басню</h2>
+            <h3>И.А. Крылов. Ворона и Лисица</h3>
+            
+            <div class="fable-text">
+                Уж сколько раз твердили миру,
+                Что лесть гнусна, вредна; но только все не впрок,
+                И в сердце льстец всегда отыщет уголок.
+
+                Вороне где-то Бог послал кусочек сыру;
+                На ель Ворона взгромоздясь,
+                Позавтракать было совсем уж собралась,
+                Да позадумалась, а сыр во рту держала.
+                На ту беду, Лиса близехонько бежала;
+                Вдруг сырный дух Лису остановил:
+                Лисица видит сыр, —
+                Лисицу сыр пленил.
+                Плутовка к дереву на цыпочках подходит;
+                Вертит хвостом, с Вороны глаз не сводит
+                И говорит так сладко, чуть дыша:
+                «Голубушка, как хороша!
+                Ну что за шейка, что за глазки!
+                Рассказывать, так, право, сказки!
+                Какие перышки! Какой носок!
+                И, верно, ангельский быть должен голосок!
+                Спой, светик, не стыдись!
+                Что ежели, сестрица,
+                При красоте такой и петь ты мастерица,
+                Ведь ты б у нас была царь-птица!»
+                Вещуньина с похвал вскружилась голова,
+                От радости в зобу дыханье сперло, —
+                И на приветливы Лисицыны слова
+                Ворона каркнула во все воронье горло:
+                Сыр выпал — с ним была плутовка такова.
+            </div>
+            
+            <div class="button-container">
+                <a id="survey-link" href="#" target="_blank"><button id="next-to-survey" class="next-btn">📝 Ответить на вопросы</button></a>
+            </div>
+            
+        </div>
+
+        
+        
+        <!-- ШАГ 4: Анкета/Опрос -->
+
+
+
+
+        <div id="step-survey" class="step hidden">
+            <h2>📋 Ответили на вопросы?</h2>
+            
+            <div class="survey-section">
+                <!-- Вопрос 1 -->
+                
+                <!-- <div class="question" data-q="1">
+                    <p>1. Как вы относитесь к Вороне?</p>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q1" value="A"> <span>А) Мне её жаль, она доверчивая и пострадала ни за что</span></label>
+                        <label class="option"><input type="radio" name="q1" value="B"> <span>Б) Она сама виновата, надо было думать головой</span></label>
+                        <label class="option"><input type="radio" name="q1" value="C"> <span>В) Обычный персонаж, ничего особенного</span></label>
+                        <label class="option"><input type="radio" name="q1" value="D"> <span>Г) Она вызывает раздражение своей глупостью</span></label>
+                    </div>
+                </div> -->
+                
+                <!-- Вопрос 2 -->
+
+                <!-- <div class="question" data-q="2">
+                    <p>2. Как вы относитесь к Лисице?</p>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q2" value="A"> <span>А) Отрицательно, она поступила подло и нечестно</span></label>
+                        <label class="option"><input type="radio" name="q2" value="B"> <span>Б) Положительно, она умная и ловкая, молодец</span></label>
+                        <label class="option"><input type="radio" name="q2" value="C"> <span>В) Нейтрально, она просто хитрая, такова её природа</span></label>
+                        <label class="option"><input type="radio" name="q2" value="D"> <span>Г) Она лицемерная и противная</span></label>
+                    </div>
+                </div> -->
+                
+                <!-- Вопрос 3 -->
+
+                <!-- <div class="question" data-q="3">
+                    <p>3. Кто виноват в том, что сыр пропал?</p>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q3" value="A"> <span>А) Лисица — она обманула Ворону</span></label>
+                        <label class="option"><input type="radio" name="q3" value="B"> <span>Б) Ворона — сама попалась на лесть</span></label>
+                        <label class="option"><input type="radio" name="q3" value="C"> <span>В) Обе виноваты</span></label>
+                        <label class="option"><input type="radio" name="q3" value="D"> <span>Г) Никто, так сложились обстоятельства</span></label>
+                    </div>
+                </div> -->
+                
+                <!-- Вопрос 4 -->
+
+                <!-- <div class="question" data-q="4">
+                    <p>4. Как вы оцениваете поступок Лисицы?</p>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q4" value="A"> <span>А) Это обман и подлость, так делать нельзя</span></label>
+                        <label class="option"><input type="radio" name="q4" value="B"> <span>Б) Это хитрость, молодец, что добилась своего</span></label>
+                        <label class="option"><input type="radio" name="q4" value="C"> <span>В) Нормальный поступок для лисы, она действует по своей природе</span></label>
+                        <label class="option"><input type="radio" name="q4" value="D"> <span>Г) Мне всё равно</span></label>
+                    </div>
+                </div> -->
+                
+                <!-- Вопрос 5 -->
+
+                <!-- <div class="question" data-q="5">
+                    <p>5. Если бы вы были Вороной, дали бы сыр Лисице?</p>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q5" value="A"> <span>А) Нет, потому что не люблю, когда мной манипулируют</span></label>
+                        <label class="option"><input type="radio" name="q5" value="B"> <span>Б) Может быть, если бы она хорошо попросила</span></label>
+                        <label class="option"><input type="radio" name="q5" value="C"> <span>В) Ни за что! Это мой сыр!</span></label>
+                        <label class="option"><input type="radio" name="q5" value="D"> <span>Г) Скорее всего, да, я тоже люблю комплименты</span></label>
+                    </div>
+                </div> -->
+                
+                <!-- Вопрос 6 -->
+
+                <!-- <div class="question" data-q="6">
+                    <p>6. Какая главная мысль этой басни?</p>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q6" value="A"> <span>А) Лесть опасна, она может лишить тебя всего</span></label>
+                        <label class="option"><input type="radio" name="q6" value="B"> <span>Б) Не будь доверчивым, думай своей головой</span></label>
+                        <label class="option"><input type="radio" name="q6" value="C"> <span>В) Льстецы всегда найдут подход к любому</span></label>
+                        <label class="option"><input type="radio" name="q6" value="D"> <span>Г) Мир жесток и несправедлив</span></label>
+                    </div>
+                </div> -->
+                
+                <!-- Вопрос 7 -->
+
+                <!-- <div class="question" data-q="7">
+                    <p>7. Есть ли в этой истории кто-то, кого вам жаль?</p>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q7" value="A"> <span>А) Да, Ворону</span></label>
+                        <label class="option"><input type="radio" name="q7" value="B"> <span>Б) Нет, никого не жаль</span></label>
+                        <label class="option"><input type="radio" name="q7" value="C"> <span>В) Скорее нет, это же просто басня</span></label>
+                        <label class="option"><input type="radio" name="q7" value="D"> <span>Г) Мне всех жаль</span></label>
+                    </div>
+                </div> -->
+                
+                <!-- Вопрос 8 -->
+
+                <!-- <div class="question" data-q="8">
+                    <p>8. Эта история для вас скорее:</p>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q8" value="A"> <span>А) Грустная (обидно за Ворону)</span></label>
+                        <label class="option"><input type="radio" name="q8" value="B"> <span>Б) Смешная (глупая Ворона попалась)</span></label>
+                        <label class="option"><input type="radio" name="q8" value="C"> <span>В) Поучительная (нужно быть осторожнее)</span></label>
+                        <label class="option"><input type="radio" name="q8" value="D"> <span>Г) Никакая, просто текст</span></label>
+                    </div> -->
+                </div>
+                
+                <!-- Вопрос 9 -->
+
+                <!-- <div class="question" data-q="9">
+                    <p>9. Какой бы совет вы дали Вороне?</p>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q9" value="A"> <span>А) Не верь льстецам, они хотят тебя обмануть</span></label>
+                        <label class="option"><input type="radio" name="q9" value="B"> <span>Б) Думай, прежде чем открывать рот</span></label>
+                        <label class="option"><input type="radio" name="q9" value="C"> <span>В) Каркать надо было тише</span></label>
+                        <label class="option"><input type="radio" name="q9" value="D"> <span>Г) Никакого совета, она сама виновата</span></label>
+                    </div>
+                </div>
+            </div> -->
+            
+            <div class="button-container">
+                <button id="submit-survey" class="submit-btn">✨ Подведем итоги!</button>
+            </div>
+        </div>
+
+        
+        
+        <!-- ШАГ 5: Благодарность и рекомендации -->
+        <div id="step-thanks" class="step hidden">
+            <h2>❤️ Спасибо за участие!</h2>
+            
+            <div style="background: rgba(255, 255, 255, 0.15); border-radius: 15px; padding: 25px; margin: 25px 0;">
+                <p style="font-size: 1.2rem; text-align: center;">
+                    Спасибо, что прошли наш опрос! Ваши ответы помогут нам лучше понять, как настроение влияет на восприятие литературы. Благодаря вам наш проект становится ближе к цели. Спасибо за ваше участие!
+                </p>
+            </div>
+            
+            <h3>📚 Что почитать в таком настроении</h3>
+            
+            <div class="book-recommendations" id="book-recommendations">
+                <!-- Контент будет подставлен скриптом в зависимости от настроения -->
+            </div>
+            
+            <div class="button-container">
+                <button id="restart-button" class="restart-btn">🔄 Начать заново</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Элементы шагов
+            const stepMood = document.getElementById('step-mood');
+            const stepMusic = document.getElementById('step-music');
+            const stepFable = document.getElementById('step-fable');
+            const stepSurvey = document.getElementById('step-survey');
+            const stepThanks = document.getElementById('step-thanks');
+            
+            // Кнопки
+            const moodButtons = document.querySelectorAll('.mood-btn');
+            const nextToFableBtn = document.getElementById('next-to-fable');
+            const nextToSurveyBtn = document.getElementById('next-to-survey');
+            const submitSurveyBtn = document.getElementById('submit-survey');
+            const restartBtn = document.getElementById('restart-button');
+
+            const surveyLink = document.getElementById('survey-link');
+            
+            // Элементы с контентом
+            const musicTitle = document.getElementById('music-title');
+            const musicSource = document.getElementById('music-source');
+            const musicAudio = document.getElementById('music-audio');
+            const musicProgress = document.getElementById('music-progress');
+            const bookRecommendations = document.getElementById('book-recommendations');
+            
+            let currentMood = null;
+            
+            // Данные для разных настроений
+            const moodData = {
+                happy: {
+                    musicTitle: 'В.А. Моцарт — «Маленькая ночная серенада» (первая часть, Allegro)',
+                    musicSource: '<a href="#" target="_blank"></a>',
+                    audioSrc: 'music/happyMusic.mp3',
+                    bodyClass: 'happy-mood',
+                    surveyUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSfaROhsLcs8cj6LTllJwtCIx0L0WadYjQ8eX7FpoXhoP-mDkQ/viewform?usp=dialog',
+                    books: `
+                        <p style="font-style: italic; margin-bottom: 20px;">
+                            Привет! Кажется, у тебя сегодня отличное настроение — это здорово! В таком состоянии мы как будто смотрим на мир через солнечные очки: замечаем в героях больше доброты, смешные моменты кажутся ещё забавнее, а сюжетные повороты наполняются оптимизмом. Эту радостную энергию здорово направить на книги, которые отзовутся тебе ярким созвучием.
+                        </p>
+                        
+                        <ul class="book-list">
+                            <li><strong>«Гарри Поттер» (Дж.К. Роулинг)</strong> — В хорошем настроении ты оценишь не только магию, а самое главное: силу дружбы, уют Хогвартса и то, как даже в сложностях герои не теряют чувства юмора.</li>
+                            <li><strong>«Приключения Тома Сойера» (Марк Твен)</strong> — Беззаботная энергия детства, остроумные проделки и летнее приключение — идеальное чтение, чтобы поднять и без того хорошее настроение.</li>
+                            <li><strong>«Хоббит, или Туда и обратно» (Дж.Р.Р. Толкин)</strong> — Захватывающее путешествие, уютный мир, мудрый и немного комичный Гэндальф. Это история о том, как даже самый маленький и домашний герой может совершить великие дела.</li>
+                            <li><strong>«Три мушкетёра» (Александр Дюма)</strong> — Порыв, отвага, настоящая дружба («Один за всех, и все за одного!») и неунывающий д’Артаньян. Читается на одном дыхании, когда полон сил.</li>
+                            <li><strong>«Маленький принц» (Антуан де Сент-Экзюпери)</strong> — В радостном состоянии эта философская сказка раскроется тебе с самой светлой стороны: как гимн дружбе, верности и умению видеть сердцем самое важное.</li>
+                            <li><strong>«Приключения Шерлока Холмса» (Артур Конан Дойл)</strong> — Тебя покорит не столько мрачный Лондон, сколько блестящий ум Холмса, его остроумие и прекрасная дружба с доктором Ватсоном. Расследование станет увлекательной игрой.</li>
+                        </ul>
+                    `
+                },
+                sad: {
+                    musicTitle: 'С. Барбер — «Adagio for Strings» (начальная часть)',
+                    musicSource: '<a href="#" target="_blank"></a>',
+                    audioSrc: 'music/sadMusic.mp3',
+                    bodyClass: 'sad-mood',
+                    surveyUrl: 'https://docs.google.com/forms/d/e/1FAIpQLScqlC8lT7K07Hl9ut1Fjnwb-ywf0IWvDTRrzls9Ql6Uk4Lv2Q/viewform?usp=dialog',
+                    books: `
+                        <p style="font-style: italic; margin-bottom: 20px;">
+                            Бывает день, когда на душе немного тихо и грустно. Знаешь, это отличный момент, чтобы взять в руки ту самую книгу. В таком состоянии мы лучше понимаем героев, которым тоже бывает тяжело, чувствуем их потери и радуемся маленьким победам над собой. Эти истории говорят с нами на одном языке — языке сердца. Они не оставят в тоске, а, наоборот, помогут её пережить и станут тихим утешением, как разговор с понимающим другом.
+                        </p>
+                        
+                        <ul class="book-list">
+                            <li><strong>«Герой нашего времени» (М.Ю. Лермонтов)</strong> — В грусти ты лучше поймёшь внутреннюю пустоту и скуку Печорина, его одиночество и сложные поступки. Это не осуждение, а попытка понять.</li>
+                            <li><strong>«Капитанская дочка» (А.С. Пушкин)</strong> — В задумчивом настроении сильнее отзовутся темы чести, долга и милосердия. История Петруши Гринёва и Маши Мироновой — это история о том, как оставаться человеком в самое трудное время.</li>
+                            <li><strong>«Дубровский» (А.С. Пушкин)</strong> — Чувство несправедливости, месть и, конечно, любовь, которая оказывается сильнее ненависти. Трагическая история, которая заставляет сопереживать.</li>
+                            <li><strong>«Ася» (И.С. Тургенев)</strong> — Короткая, но очень пронзительная повесть о первой любви, упущенном счастье и том светлом чувстве сожаления, которое иногда остаётся с нами навсегда.</li>
+                            <li><strong>«Детство» (Л.Н. Толстой)</strong> — Ты погрузишься в мир детских чувств, первых открытий, потерь и радостей Николеньки Иртеньева. В грусти эта книга кажется особенно тёплой и настоящей.</li>
+                            <li><strong>«Старик и море» (Эрнест Хемингуэй)</strong> — Короткая, сильная повесть о борьбе, поражении и человеческом достоинстве. В грусти её стоическое спокойствие и упорство старца могут дать внутреннюю опору.</li>
+                        </ul>
+                    `
+                },
+                neutral: {
+                    musicTitle: 'Stars of the Lid — «Requiem for Dying Mothers, Pt. 2» (начало)',
+                    musicSource: '<a href="#" target="_blank"></a>',
+                    audioSrc: 'music/neutralMusic.mp3',
+                    bodyClass: 'neutral-mood',
+                    surveyUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSeVQ3qI6mpUw0ALbFmywOd6b_J9FTBSa1RAl5gVEJjAFWVUrA/viewform?usp=dialog',
+                    books: `
+                        <p style="font-style: italic; margin-bottom: 20px;">
+                            Отлично! У тебя ровное и спокойное состояние — идеальное для чтения. Ты не ждёшь от книги только смеха или слёз, а готова просто погрузиться в хорошую историю и оценить её по достоинству. Твой ум сейчас ясный и внимательный, а значит, ты сможешь уловить все тонкости сюжета и понять даже самых сложных героев. Самое время для книг, которые заставляют думать, но делают это интересно.
+                        </p>
+                        
+                        <ul class="book-list">
+                            <li><strong>«Ревизор» (Н.В. Гоголь)</strong> — Ты сможешь спокойно оценить всю гениальность этой комедии: блестящие характеры, абсурдные ситуации и острую сатиру на чиновников. Сейчас ты точно не пропустишь ни одной смешной детали.</li>
+                            <li><strong>«Мастер и Маргарита» (Михаил Булгаков)</strong> — В спокойном настроении ты идеально уловишь баланс между едкой сатирой на Москву 30-х, мистической линией с Воландом и трогательной историей любви Мастера.</li>
+                            <li><strong>«Приключения Гулливера» (Джонатан Свифт)</strong> — Это не просто сказка о путешествиях, а остроумная и глубокая сатира на общество, политику и человеческую природу. Сейчас ты сможешь это оценить.</li>
+                            <li><strong>«Ромео и Джульетта» (Уильям Шекспир)</strong> — Без лишних эмоций ты сможешь разобраться в хитросплетениях сюжета, красоте языка и вечных конфликтах: любовь против ненависти, чувства против долга.</li>
+                            <li><strong>«Горе от ума» (А.С. Грибоедов)</strong> — Спокойное состояние — лучший помощник, чтобы разобраться в острых диалогах Чацкого и Фамусова, понять все скрытые смыслы и блестящий юмор этой комедии в стихах.</li>
+                            <li><strong>«Алиса в Стране чудес» (Льюис Кэрролл)</strong> — В ровном состоянии можно не просто следить за абсурдом, а увидеть в нём блестящую игру логики, пародию на взрослый мир и глубокую философию, скрытую за чеширской улыбкой.</li>
+                        </ul>
+                    `
+                }
+            };
+            
+            // Обработчики кнопок настроения
+            moodButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    currentMood = this.getAttribute('data-mood');
+                    
+                    // Меняем фон в зависимости от настроения
+                    document.body.className = '';
+                    if (moodData[currentMood].bodyClass) {
+                        document.body.classList.add(moodData[currentMood].bodyClass);
+                    }
+                    
+                    // Обновляем музыкальный блок
+                    musicTitle.textContent = moodData[currentMood].musicTitle;
+                    musicSource.innerHTML = moodData[currentMood].musicSource;
+                    musicAudio.src = moodData[currentMood].audioSrc;
+
+                    // Устанавливаем ссылку для опроса в зависимости от настроения
+                    if (moodData[currentMood].surveyUrl) {
+                        surveyLink.href = moodData[currentMood].surveyUrl;
+                    }
+                    
+                    // Переходим к музыке
+                    stepMood.classList.add('hidden');
+                    stepMusic.classList.remove('hidden');
+                    
+                    // Сброс прогресса
+                    musicProgress.style.width = '0%';
+                    nextToFableBtn.classList.add('hidden');
+                    
+                    // Пытаемся воспроизвести
+                    musicAudio.load();
+                    musicAudio.play().catch(e => console.log('Автовоспроизведение заблокировано'));
+                });
+            });
+            
+            // Отслеживание прогресса музыки
+            musicAudio.addEventListener('timeupdate', function() {
+                if (musicAudio.duration) {
+                    const progress = (musicAudio.currentTime / musicAudio.duration) * 100;
+                    musicProgress.style.width = `${progress}%`;
+                    
+                    // Показываем кнопку через 30 секунд
+                    if (musicAudio.currentTime >= 30 || progress >= 95) {
+                        nextToFableBtn.classList.remove('hidden');
+                    }
+                }
+            });
+            
+            // Переход к басне
+            nextToFableBtn.addEventListener('click', function() {
+                stepMusic.classList.add('hidden');
+                stepFable.classList.remove('hidden');
+                musicAudio.pause();
+            });
+            
+            // Переход к опросу
+            nextToSurveyBtn.addEventListener('click', function() {
+                stepFable.classList.add('hidden');
+                stepSurvey.classList.remove('hidden');
+            });
+            
+            // Отправка опроса
+            submitSurveyBtn.addEventListener('click', function() {
+                // Проверяем, отвечены ли все вопросы
+                
+                
+                // const questions = document.querySelectorAll('.question');
+                // let allAnswered = true;
+                
+                // questions.forEach(q => {
+                //     const radioName = q.querySelector('input[type="radio"]').name;
+                //     const checked = document.querySelector(`input[name="${radioName}"]:checked`);
+                //     if (!checked) allAnswered = false;
+                // });
+                
+                // if (!allAnswered) {
+                //     alert('Пожалуйста, ответьте на все вопросы перед отправкой.');
+                //     return;
+                // }
+                
+                // Собираем ответы
+                const answers = {};
+                for (let i = 1; i <= 9; i++) {
+                    const selected = document.querySelector(`input[name="q${i}"]:checked`);
+                    if (selected) {
+                        answers[`q${i}`] = selected.value;
+                    }
+                }
+                
+                console.log('Ответы пользователя:', answers);
+                
+                // Подставляем рекомендации книг в зависимости от настроения
+                if (currentMood && moodData[currentMood]) {
+                    bookRecommendations.innerHTML = moodData[currentMood].books;
+                }
+                
+                // Переход к благодарности
+                stepSurvey.classList.add('hidden');
+                stepThanks.classList.remove('hidden');
+            });
+            
+            // Рестарт
+            restartBtn.addEventListener('click', function() {
+                // Сброс всех шагов
+                stepThanks.classList.add('hidden');
+                stepMood.classList.remove('hidden');
+                
+                // Сброс радио-кнопок
+                document.querySelectorAll('input[type="radio"]').forEach(radio => {
+                    radio.checked = false;
+                });
+                
+                // Сброс фона
+                document.body.className = '';
+                
+                // Сброс аудио
+                musicAudio.pause();
+                musicAudio.currentTime = 0;
+                musicProgress.style.width = '0%';
+                nextToFableBtn.classList.add('hidden');
+            });
+            
+            // Автоматический переход после завершения музыки
+            musicAudio.addEventListener('ended', function() {
+                nextToFableBtn.classList.remove('hidden');
+            });
+        });
+    </script>
+</body>
+</html>
