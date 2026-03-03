@@ -409,7 +409,7 @@
             </div>
             
             <div class="button-container">
-                <a href="https://docs.google.com/forms/d/e/1FAIpQLScqlC8lT7K07Hl9ut1Fjnwb-ywf0IWvDTRrzls9Ql6Uk4Lv2Q/viewform?usp=publish-editor"><button id="next-to-survey" class="next-btn">📝 Ответить на вопросы</button></a>
+                <a id="survey-link" href="#" target="_blank"><button id="next-to-survey" class="next-btn">📝 Ответить на вопросы</button></a>
             </div>
             
         </div>
@@ -578,6 +578,8 @@
             const nextToSurveyBtn = document.getElementById('next-to-survey');
             const submitSurveyBtn = document.getElementById('submit-survey');
             const restartBtn = document.getElementById('restart-button');
+
+            const surveyLink = document.getElementById('survey-link');
             
             // Элементы с контентом
             const musicTitle = document.getElementById('music-title');
@@ -595,6 +597,7 @@
                     musicSource: '<a href="#" target="_blank"></a>',
                     audioSrc: 'music/happyMusic.mp3',
                     bodyClass: 'happy-mood',
+                    surveyUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSfaROhsLcs8cj6LTllJwtCIx0L0WadYjQ8eX7FpoXhoP-mDkQ/viewform?usp=dialog',
                     books: `
                         <p style="font-style: italic; margin-bottom: 20px;">
                             Привет! Кажется, у тебя сегодня отличное настроение — это здорово! В таком состоянии мы как будто смотрим на мир через солнечные очки: замечаем в героях больше доброты, смешные моменты кажутся ещё забавнее, а сюжетные повороты наполняются оптимизмом. Эту радостную энергию здорово направить на книги, которые отзовутся тебе ярким созвучием.
@@ -615,6 +618,7 @@
                     musicSource: '<a href="#" target="_blank"></a>',
                     audioSrc: 'music/sadMusic.mp3',
                     bodyClass: 'sad-mood',
+                    surveyUrl: 'https://docs.google.com/forms/d/e/1FAIpQLScqlC8lT7K07Hl9ut1Fjnwb-ywf0IWvDTRrzls9Ql6Uk4Lv2Q/viewform?usp=dialog',
                     books: `
                         <p style="font-style: italic; margin-bottom: 20px;">
                             Бывает день, когда на душе немного тихо и грустно. Знаешь, это отличный момент, чтобы взять в руки ту самую книгу. В таком состоянии мы лучше понимаем героев, которым тоже бывает тяжело, чувствуем их потери и радуемся маленьким победам над собой. Эти истории говорят с нами на одном языке — языке сердца. Они не оставят в тоске, а, наоборот, помогут её пережить и станут тихим утешением, как разговор с понимающим другом.
@@ -635,6 +639,7 @@
                     musicSource: '<a href="#" target="_blank"></a>',
                     audioSrc: 'music/neutralMusic.mp3',
                     bodyClass: 'neutral-mood',
+                    surveyUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSeVQ3qI6mpUw0ALbFmywOd6b_J9FTBSa1RAl5gVEJjAFWVUrA/viewform?usp=publish-editor',
                     books: `
                         <p style="font-style: italic; margin-bottom: 20px;">
                             Отлично! У тебя ровное и спокойное состояние — идеальное для чтения. Ты не ждёшь от книги только смеха или слёз, а готова просто погрузиться в хорошую историю и оценить её по достоинству. Твой ум сейчас ясный и внимательный, а значит, ты сможешь уловить все тонкости сюжета и понять даже самых сложных героев. Самое время для книг, которые заставляют думать, но делают это интересно.
@@ -667,6 +672,11 @@
                     musicTitle.textContent = moodData[currentMood].musicTitle;
                     musicSource.innerHTML = moodData[currentMood].musicSource;
                     musicAudio.src = moodData[currentMood].audioSrc;
+
+                    // Устанавливаем ссылку для опроса в зависимости от настроения
+                    if (moodData[currentMood].surveyUrl) {
+                        surveyLink.href = moodData[currentMood].surveyUrl;
+                    }
                     
                     // Переходим к музыке
                     stepMood.classList.add('hidden');
